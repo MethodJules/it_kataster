@@ -1,0 +1,97 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: hofer
+ * Date: 10.07.2017
+ * Time: 09:31
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function bi_visual_menu()
+{
+    $items['d3/bi_visual/%'] = array(
+        'title' => '',
+        'description' => 'Different visualization.',
+        'page callback' => 'bi_visual',
+        'access callback' => TRUE,
+	'page arguments' => array(2),
+    );
+
+return $items;
+}
+
+
+
+
+function bi_visual($type) {
+	//$type = "Disziplinen";    
+	module_load_include('inc','bi_visual','query_research_results');
+	$result = query_research_results($type);
+	//dsm($result->fetchAll());
+	$data = array();
+		foreach($result as $line) {
+		//	dsm($line->Anzahl);
+		//dsm($line->count.terms(name));
+		array_push($data, array($line->name, $line->Anzahl));
+	}
+	//dsm($data);
+	//Get Query Results
+	/*
+	$data = array(
+		array('term',8),
+		array('dhhdh',7),
+		array('dhdhdj',10),
+
+
+	);
+	*/
+	$chart = array(
+		'id' => 'visualization',
+		'type' => 'piechart',
+		'rows' => $data,
+	);
+
+  $type_of_visualization = array(
+    '#theme' => 'item_list',
+    '#title' => 'Analysen',
+    '#items' => array(
+      '<a href="./disziplinen">Disziplinen</a>',
+      '<a href="./ergebnistyp">Forschungsergebnisse</a>',
+      '<a href="./branchen">Branchen</a>',
+
+    ),
+  );
+
+  $link = array(
+    '#theme' => 'link',
+    '#text' => 'Disziplinen',
+    '#path' => './disziplinen',
+    '#options' => array('attributes' => array('title' => 'Test')),
+    '#prefix' => '<h3>',
+    '#suffix' => '</h3>'
+  );
+  $link2 = array(
+    '#theme' => 'link',
+    '#text' => 'Säulendiagramm',
+    '#path' => './node/101',
+    '#options' => array('attributes' => array('title' => 'Test2')),
+    '#prefix' => '<h3>',
+    '#suffix' => '</h3>'
+  );
+
+  $form['reports'] = array(
+    '#title' => t('Crust Size'),
+    '#type' => 'select',
+    '#description' => 'Select the desired pizza crust size.',
+    '#options' => array(t('--- SELECT ---'), t('10"'), t('12"'), t('16"')),
+  );
+
+	$output = render($type_of_visualization) .  d3_draw($chart) ;
+
+	//dsm($output);
+
+	return $output;
+}

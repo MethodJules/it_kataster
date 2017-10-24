@@ -118,7 +118,8 @@ function map_filters_leaflet_map_prebuild_alter(&$settings) {
 
 /**
  * Implements hook_views_post_execute().
- * Compute coordinates of projects and their associated partners to connect them by lines on leaflet maps.
+ * Compute coordinates of projects and their associated partners to connect them by lines on leaflet maps
+ * and connections between associated firms.
  */
 function map_filters_views_post_execute(&$view) {
   if ($view->name === 'research' && $view->current_display === 'researchsite') {
@@ -154,6 +155,44 @@ function map_filters_views_post_execute(&$view) {
       if (is_array($partnerIds)) {
         foreach ($partnerIds as $p) {
           $polyLines[] = array($projects[$nid], $projectPartners[$p['target_id']]);
+        }
+      }
+    }
+
+    drupal_add_js(array('map_filters' => array('polylinesData' => $polyLines)), 'setting');
+  }
+
+
+  // IT-Kataster firm cluster view
+  if ($view->name === 'hildesheim_region' && $view->current_display === 'page') {
+
+    $polyLines = array();
+    $firms = array();
+
+    // cluster the firm coordinates by their associated taxonomy terms
+    foreach ($view->result as $r) {
+      if ($r->_field_data['nid']['entity']->type === 'firma') {
+        $geoData = $r->field_field_location_firma[0]['raw'];
+
+        if ($geoData) {
+          // multiple taxonomy terms per firm possible
+          // change "field_ich_bin" if firms should be clustered by a different content type taxonomy field
+          foreach ($r->_field_data['nid']['entity']->field_ich_bin['und'] as $term) {
+            $firms[$term['tid']][] = array('lat' => $geoData['lat'], 'lng' => $geoData['lon']);
+          }
+        }
+      }
+    }
+
+    // build connections between all firms for each taxonomy term of the "Ich bin" vocabulary
+    foreach ($firms as $tid => $termCluster) {
+      foreach ($termCluster as $id => $coordinate) {
+
+        // add connections to all previous firms of the same taxonomy term cluster
+        $id--;
+        while ($id >= 0) {
+          $polyLines[] = array($coordinate, $termCluster[$id]);
+          $id--;
         }
       }
     }

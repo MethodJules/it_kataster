@@ -22,7 +22,7 @@ function meetup_node_view($node, $view_mode, $langcode) {
 		$node->content['meetup_button_interesse'] = array(
 			'#prefix' => "<div id='meetup-button-interesse'>",
 			'#suffix' => "</div>",
-			'#markup' => "<a href='interesse'>Bin interessiert</a>",
+			'#markup' => meetup_button_interesse(),
 			'#weight' => 2000,
 		);
 	}
@@ -40,22 +40,37 @@ function meetup_menu() {
 		'page arguments' => array(1),
 	);
 
+	$items['meetup/interesse/%'] = array(
+		'title' => '',
+		'description' => 'Different visualization.',
+		'page callback' => 'meetup_interesse',
+		'access callback' => TRUE,
+		'page arguments' => array(2),
+	);
+
+
+
 	return $items;
 }
 
 function meetup_button_teilnehmen(){
-
 	$node = menu_get_object();
+	return "<a href='" . base_path() . "meetup/teilnehmen/" . $node->nid . "'>Ich nehme teil</a>";
+}
 
-	//dsm($node->nid);
-	//dsm(base_path());
-
-
-	return "<a href='" . base_path() . "meetup/teilnehmen/" . $node->nid . "'>Teilnehmen</a>";
+function meetup_button_interesse(){
+	$node = menu_get_object();
+	return "<a href='" . base_path() . "meetup/interesse/" . $node->nid . "'>Ich bin interessiert</a>";
 }
 
 function meetup_teilnehmen($node_id){
-	$message = "<p>Vielen Dank für Ihre Teilnahme am Event " . $node_id . "</p>";
+	$message = "<p>Vielen Dank für Ihre Teilnahme am Event.</p>";
+	return $message;
+}
+
+function meetup_interesse($node_id) {
+	$message = "<p>Vielen Dank für Ihr Interesse am Event.</p><p><a href=\"#\" class=\"back\">Back</a></p>";
+
 
 	return $message;
 }

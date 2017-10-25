@@ -29,8 +29,8 @@
 
             var lMap = Drupal.settings.leaflet[0].lMap;
             var layerControl = null;
-            lMap.addLayer(heat);
-            $('.leaflet-marker-pane, .leaflet-shadow-pane').hide();
+            //lMap.addLayer(heat);
+            //$('.leaflet-marker-pane, .leaflet-shadow-pane').hide();
 
             if ($('.leaflet-control-layers-overlays').length === 0) {
                 layerControl = L.control.layers({}, {'Heatmap' : heat}).addTo(lMap);

@@ -581,7 +581,8 @@ a:focus {
   margin: 0;
   float: left;
   height: 70px;
-  background: #e7e7e7;
+  /*background: #e7e7e7;*/
+    box-shadow: rgba(0,0,0,.118) 0 4px 3px 3px;
   font-size: .8rem;
   z-index: 9999;
   position: absolute;
@@ -660,7 +661,8 @@ a:focus {
 .nav ul.menu li.leaf  > a:active {
 	line-height: 3em;
 	color: #e7e7e7; 
-	background-color: #444;
+	/*background-color: #444;*/
+    background-color: rgba(25,25,25,0.8);
 }
 	
 .nav ul li > a,

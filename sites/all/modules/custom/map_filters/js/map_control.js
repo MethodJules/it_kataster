@@ -32,10 +32,6 @@
             //lMap.addLayer(heat);
             //$('.leaflet-marker-pane, .leaflet-shadow-pane').hide();
 
-            if ($('.leaflet-control-layers-overlays').length === 0) {
-                layerControl = L.control.layers({}, {'Heatmap' : heat}).addTo(lMap);
-            }
-
             lMap.on('overlayadd', function(overlay) {
                 if(overlay.name === 'Heatmap') {
                     $('.leaflet-marker-pane, .leaflet-shadow-pane').hide();
@@ -74,15 +70,23 @@
 
             };
 
-            var polylinesData = settings.map_filters.polylinesData;
-            if (polylinesData && layerControl) {
-                multiPolyline = L.multiPolyline(settings.map_filters.polylinesData, polylineConfig);
-                Drupal.settings.map_filters.polylinesData = [];
-                layerControl.addOverlay(multiPolyline, 'Verbindungen'); // TODO generalize
-            } else {
-                $(".leaflet-control-layers-overlays span:contains('Verbindungen')").parent().hide();
-            }
+            // Add layer control to map
+            if ($('.leaflet-control-layers-overlays').length === 0) {
+                layerControl = L.control.layers({}, {}).addTo(lMap);
 
+                if (heat) {
+                    layerControl.addOverlay(heat, 'Heatmap');
+                }
+
+                var polylinesData = settings.map_filters.polylinesData;
+                if (polylinesData && layerControl) {
+                    var multiPolyline = L.multiPolyline(settings.map_filters.polylinesData, polylineConfig);
+                    Drupal.settings.map_filters.polylinesData = [];
+                    layerControl.addOverlay(multiPolyline, 'Verbindungen'); // TODO generalize
+                } else {
+                    $(".leaflet-control-layers-overlays span:contains('Verbindungen')").parent().hide();
+                }
+            }
         }
     };
 })(jQuery, Drupal);

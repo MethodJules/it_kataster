@@ -58,12 +58,14 @@ function bi_visual($type) {
     '#theme' => 'item_list',
     '#title' => 'Analysen',
     '#items' => array(
-      '<a href="./disziplinen">Disziplinen</a>',
-      '<a href="./ergebnistyp">Forschungsergebnisse</a>',
-      '<a href="./branchen">Branchen</a>',
+      '<a href="./branche">Branchen</a>',
+      '<a href="./typ">Typ(Anwender/Hersteller/Talent)</a>',
+      //<a href="./branchen">Branchen</a>',
 
     ),
   );
+
+	$title = "<h1>Analysereports</h2>";
 
   $link = array(
     '#theme' => 'link',
@@ -89,7 +91,7 @@ function bi_visual($type) {
     '#options' => array(t('--- SELECT ---'), t('10"'), t('12"'), t('16"')),
   );
 
-	$output = render($type_of_visualization) .  d3_draw($chart) ;
+	$output = render($title) . render($type_of_visualization) .  d3_draw($chart) ;
 
 	//dsm($output);
 

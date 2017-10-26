@@ -9,6 +9,21 @@
 
 function query_research_results($type) {
     //dsm($type);
+
+	switch ($type) {
+		case("branche"):
+			$sql_query = "SELECT terms.name, count(terms.name) AS Anzahl FROM {field_data_field_branche_firma} AS fe_typ INNER JOIN {taxonomy_term_data} AS terms 
+				ON field_branche_firma_tid = terms.tid GROUP BY terms.name;";
+			break;
+
+		case("typ"):
+			$sql_query = "SELECT terms.name, count(terms.name) AS Anzahl FROM {field_data_field_ich_bin} AS fe_typ INNER JOIN {taxonomy_term_data} AS terms 
+				ON field_ich_bin_tid = terms.tid GROUP BY terms.name;";
+			break;
+	}
+
+
+	/*
 	switch($type){
 		case ("ergebnistyp"):
 			$sql_query = "SELECT terms.name, count(terms.name) AS Anzahl FROM {field_data_field_forschungsergebnistyp} AS fe_typ INNER JOIN {taxonomy_term_data} AS terms 
@@ -31,7 +46,7 @@ function query_research_results($type) {
 			break;
 
 
-	}
+	}*/
 	//dsm($sql_query->fetchAll());
 	$result = db_query($sql_query);
 	return $result;

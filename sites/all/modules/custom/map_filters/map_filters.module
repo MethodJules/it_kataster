@@ -177,7 +177,7 @@ function map_filters_views_post_execute(&$view) {
         if ($geoData) {
           // multiple taxonomy terms per firm possible
           // change "field_ich_bin" if firms should be clustered by a different content type taxonomy field
-          foreach ($r->_field_data['nid']['entity']->field_ich_bin['und'] as $term) {
+          foreach ($r->_field_data['nid']['entity']->field_verbund_firma['und'] as $term) {
             $firms[$term['tid']][] = array('lat' => $geoData['lat'], 'lng' => $geoData['lon']);
           }
         }

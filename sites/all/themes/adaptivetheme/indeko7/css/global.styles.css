@@ -581,8 +581,8 @@ a:focus {
   margin: 0;
   float: left;
   height: 70px;
-  /*background: #e7e7e7;*/
-    box-shadow: rgba(0,0,0,.118) 0 4px 3px 3px;
+  background: #e7e7e7;
+    /*box-shadow: rgba(0,0,0,.118) 0 4px 3px 3px;*/
   font-size: .8rem;
   z-index: 9999;
   position: absolute;

@@ -59,7 +59,7 @@ function bi_visual($type) {
     '#title' => 'Analysen',
     '#items' => array(
       '<a href="./branche">Branchen</a>',
-      '<a href="./typ">Typ(Anwender/Hersteller/Talent)</a>',
+      '<a href="./typ">Typ(Anwender/Hersteller)</a>',
       //<a href="./branchen">Branchen</a>',
 
     ),
